@@ -6,16 +6,21 @@ const GitCient = require("./git/client");
 
 const git = new GitCient();
 
-//commands 
-
+//commands
+const catFileCommand = require("./git/commands/cat-file");
 
 function handleCatFile() {
-  const hash = process.argv[3]; }
-
-
+  const flag = process.argv[3];
+  const hash = process.argv[4];
+  const command = new catFileCommand(flag, hash);
+  git.run(command);
+  // if (flag === "-p") {
+  //   catFile(hash);
+  // }
+}
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
-console.log("Logs from your program will appear here!");
+// console.log("Logs from your program will appear here!");
 // console.error("Logs from your program will appear here!");
 
 // Uncomment this block to pass the first stage
