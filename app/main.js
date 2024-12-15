@@ -8,15 +8,25 @@ const git = new GitCient();
 
 //commands
 const catFileCommand = require("./git/commands/cat-file");
+const hashObjectCommand = require("./git/commands/hash-object");
 
 function handleCatFile() {
   const flag = process.argv[3];
   const hash = process.argv[4];
   const command = new catFileCommand(flag, hash);
   git.run(command);
-  // if (flag === "-p") {
-  //   catFile(hash);
-  // }
+}
+
+function handleHashObject() {
+  let flag = process.argv[3];
+  let filepath = process.argv[4];
+  if (!filepath) {
+    filepath = flag;
+    flag = null;
+  }
+  const command = new hashObjectCommand(flag, filepath);
+  git.run(command);
+  // console.log(flag, filepath);
 }
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -29,6 +39,9 @@ const command = process.argv[2];
 switch (command) {
   case "init":
     createGitDirectory();
+    break;
+  case "hash-object":
+    handleHashObject();
     break;
   case "cat-file":
     handleCatFile();
