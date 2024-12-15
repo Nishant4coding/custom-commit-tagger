@@ -1,15 +1,14 @@
 {
-    "name": "@codecrafters/build-your-own-git",
-    "version": "1.0.0",
-    "description": "Build your own Git challenge, from CodeCrafters",
-    "main": "main.js",
-    "scripts": {
-        "dev": "node app/main.js"
-    },
-    "keywords": [
-        "build-your-own-x"
-    ],
-    "author": "",
-    "license": "MIT",
-    "dependencies": {}
+  "name": "custom-git-tags",
+  "version": "1.0.0",
+  "description": "A lightweight Git implementation with custom tagging features",
+  "main": "main.js",
+  "bin": {
+    "custom-git": "./main.js"
+  },
+  "author": "Nishant4coding",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {}
 }
