@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+const fs = require("fs");
+const path = require("path");
+
+// Path to the tags file
+const TAGS_FILE_PATH = path.join(process.cwd(), ".git", "commit-tags.json");
+
+function searchCommitsByTag(tag) {
+  // Check if the tags file exists
+  if (!fs.existsSync(TAGS_FILE_PATH)) {
+    console.log("No tags found.");
+    return;
+  }
+
+  const tags = JSON.parse(fs.readFileSync(TAGS_FILE_PATH));
+
+  if (!tags[tag]) {
+    console.log(`No commits found for tag "${tag}".`);
+    return;
+  }
+
+  console.log(`Commits for tag "${tag}":`);
+  tags[tag].forEach((commitHash) => {
+    console.log(`- ${commitHash}`);
+  });
+}
+
+// Parse arguments
+const args = process.argv.slice(2);
+const tagIndex = args.indexOf("--tag");
+
+if (tagIndex === -1) {
+  console.error("Please provide a tag to search for.");
+  process.exit(1);
+}
+
+const tag = args[tagIndex + 1];
+
+// Search commits by tag
+searchCommitsByTag(tag);
