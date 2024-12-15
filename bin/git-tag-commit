@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+const fs = require("fs");
+const path = require("path");
+const { execSync } = require("child_process");
+
+// Path to the tags file
+const TAGS_FILE_PATH = path.join(process.cwd(), ".git", "commit-tags.json");
+
+// Function to add a commit with a custom tag
+function commitWithTag(message, tag) {
+  // Run the standard git commit command
+  execSync(`git commit -m "${message}"`);
+
+  // Get the latest commit hash
+  const commitHash = execSync("git rev-parse HEAD").toString().trim();
+
+  // Get existing tags or create a new tags object
+  let tags = {};
+  if (fs.existsSync(TAGS_FILE_PATH)) {
+    tags = JSON.parse(fs.readFileSync(TAGS_FILE_PATH));
+  }
+
+  // Add the tag to the commit
+  if (!tags[tag]) {
+    tags[tag] = [];
+  }
+  tags[tag].push(commitHash);
+
+  // Save the tags file
+  fs.writeFileSync(TAGS_FILE_PATH, JSON.stringify(tags, null, 2));
+
+  console.log(`Commit tagged with "${tag}": ${commitHash}`);
+}
+
+// Parse arguments
+const args = process.argv.slice(2);
+const messageIndex = args.indexOf("-m");
+const tagIndex = args.indexOf("-t");
+
+if (messageIndex === -1 || tagIndex === -1) {
+  console.error("Please provide both a commit message (-m) and a tag (-t).");
+  process.exit(1);
+}
+
+const message = args[messageIndex + 1];
+const tag = args[tagIndex + 1];
+
+// Commit with tag
+commitWithTag(message, tag);

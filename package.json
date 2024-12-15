@@ -1,14 +1,9 @@
 {
-  "name": "custom-git-tags",
+  "name": "custom-commit-tagger",
   "version": "1.0.0",
-  "description": "A lightweight Git implementation with custom tagging features",
-  "main": "main.js",
   "bin": {
-    "custom-git": "./main.js"
-  },
-  "author": "Nishant4coding",
-  "scripts": {
-    "start": "node main.js"
+    "git-tag-commit": "./bin/git-tag-commit.js",
+    "git-search-commits": "./bin/git-search-commits.js"
   },
   "dependencies": {}
 }
