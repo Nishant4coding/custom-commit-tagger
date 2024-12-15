@@ -9,6 +9,8 @@ const git = new GitCient();
 //commands
 const catFileCommand = require("./git/commands/cat-file");
 const hashObjectCommand = require("./git/commands/hash-object");
+const commitCommand = require("./git/commands/commit");
+const searchCommitsCommand = require("./git/commands/hash-object");
 
 function handleCatFile() {
   const flag = process.argv[3];
@@ -29,6 +31,28 @@ function handleHashObject() {
   // console.log(flag, filepath);
 }
 
+function handleTagCommit() {
+  const commitHash = process.argv[3];
+  const tag = process.argv[4];
+  if (!commitHash || !tag) {
+    throw new Error("Please provide both a commit hash and a tag.");
+  }
+
+  const command = new commitCommand(commitHash, tag);
+  git.run(command);
+}
+
+function handleSearchCommits() {
+  const tag = process.argv[3];
+
+  if (!tag) {
+    throw new Error("Please provide a tag to search for.");
+  }
+
+  const command = new searchCommitsCommand(tag);
+  git.run(command);
+}
+
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 // console.log("Logs from your program will appear here!");
 // console.error("Logs from your program will appear here!");
@@ -45,6 +69,12 @@ switch (command) {
     break;
   case "cat-file":
     handleCatFile();
+    break;
+  case "tag-commit":
+    handleTagCommit();
+    break;
+  case "search-commits":
+    handleSearchCommits();
     break;
   default:
     throw new Error(`Unknown command ${command}`);
